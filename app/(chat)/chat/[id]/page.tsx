@@ -48,19 +48,21 @@ export default async function ChatPage({ params }: ChatPageProps) {
     notFound()
   }
 
+  const filteredMessages = chat.messages.filter(
+  (m) => m.role !== 'function' && m.role !== 'tool'
+  )
   return (
   <AI
     initialAIState={{
       chatId: chat.id,
       // filtriamo via eventuali messaggi "function" / "tool"
-      messages: chat.messages
-        .filter((m) => m.role !== 'function' && m.role !== 'tool') as any,
+      messages: filteredMessages as any,
     }}
   >
     <Chat
       id={chat.id}
       session={session}
-      initialMessages={chat.messages}
+      initialMessages={filteredMessages as any}
       missingKeys={missingKeys}
     />
   </AI>
