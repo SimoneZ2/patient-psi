@@ -49,13 +49,21 @@ export default async function ChatPage({ params }: ChatPageProps) {
   }
 
   return (
-    <AI initialAIState={{ chatId: chat.id, messages: chat.messages }}>
-      <Chat
-        id={chat.id}
-        session={session}
-        initialMessages={chat.messages}
-        missingKeys={missingKeys}
-      />
-    </AI>
-  )
+  <AI
+    initialAIState={{
+      chatId: chat.id,
+      // filtriamo via eventuali messaggi "function" / "tool"
+      messages: chat.messages
+        .filter((m) => m.role !== 'function' && m.role !== 'tool') as any,
+    }}
+  >
+    <Chat
+      id={chat.id}
+      session={session}
+      initialMessages={chat.messages}
+      missingKeys={missingKeys}
+    />
+  </AI>
+)
+
 }
